@@ -1,0 +1,56 @@
+{% load tailwind_tags %}
+{% tailwind_css %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پلتفرم کولیب</title>
+    <link rel="stylesheet" href="{% static 'styles/App.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  </head>
+
+<body>
+    <div class="flex flex-col items-center justify-center w-screen h-screen gap-12 py-8 bg-gradient-to-br from-emerald-950 to-teal-950">
+      <svg class="h-[52vh] aspect-square drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" fill="none">
+        <circle cx="260" cy="260" r="210" fill="#10b981" fill-opacity="0.08"/>
+        <rect x="160" y="140" width="200" height="160" rx="35" fill="#10b981" stroke="#064e3b" stroke-width="18"/>
+        <rect x="185" y="170" width="150" height="100" rx="15" fill="#111827" stroke="#064e3b" stroke-width="14"/>
+        <circle cx="225" cy="225" r="22" fill="#10b981"/>
+        <circle cx="295" cy="225" r="22" fill="#10b981"/>
+        <circle cx="225" cy="225" r="9" fill="#111827"/>
+        <circle cx="295" cy="225" r="9" fill="#111827"/>
+        <line x1="215" y1="215" x2="235" y2="235" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+        <line x1="235" y1="215" x2="215" y2="235" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+        <line x1="285" y1="215" x2="305" y2="235" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+        <line x1="305" y1="215" x2="285" y2="235" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+        <path d="M230 270 Q260 295 290 270" stroke="#064e3b" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <line x1="260" y1="140" x2="260" y2="95" stroke="#10b981" stroke-width="22" stroke-linecap="round"/>
+        <circle cx="260" cy="88" r="18" fill="#10b981" stroke="#064e3b" stroke-width="12"/>
+        <circle cx="260" cy="88" r="8" fill="#ef4444"/>
+        <rect x="175" y="165" width="25" height="8" rx="2" fill="#064e3b"/>
+        <rect x="320" y="165" width="25" height="8" rx="2" fill="#064e3b"/>
+        <rect x="185" y="255" width="150" height="6" rx="3" fill="#064e3b"/>
+        <rect x="175" y="305" width="170" height="135" rx="25" fill="#10b981" stroke="#064e3b" stroke-width="18"/>
+        <rect x="205" y="335" width="110" height="75" rx="12" fill="#111827" stroke="#10b981" stroke-width="10"/>
+        <text x="260" y="385" font-size="48" font-weight="700" text-anchor="middle" fill="#ef4444" font-family="sans-serif">⚠</text>
+        <rect x="125" y="325" width="45" height="95" rx="20" fill="#10b981" stroke="#064e3b" stroke-width="16" transform="rotate(-25 145 360)"/>
+        <rect x="350" y="325" width="45" height="95" rx="20" fill="#10b981" stroke="#064e3b" stroke-width="16" transform="rotate(25 375 360)"/>
+        <rect x="205" y="430" width="38" height="75" rx="15" fill="#064e3b"/>
+        <rect x="277" y="430" width="38" height="75" rx="15" fill="#064e3b"/>
+      </svg>
+
+      <div class="flex flex-col items-center gap-5 text-center max-w-lg px-6">
+        <h1 class="text-4xl font-bold text-emerald-100 tracking-tight">
+          خطای هوش مصنوعی
+        </h1>
+        <p class="text-xl text-emerald-200 leading-relaxed">
+          متأسفانه در برقراری ارتباط با هوش مصنوعی مشکلی پیش آمده است. 
+          لطفاً چند لحظه صبر کنید و دوباره تلاش کنید.
+        </p>
+      </div>
+    </div>
+</body>
+</html>
