@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %} تماس با ما {% endblock %}
+
+{% load static %}
+
+{% block custom_css %} 
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+{% endblock %}
+
+{% block custom_js %}
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script src="{% static 'js/contact.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="bg-white lg:grid lg:h-screen lg:place-content-center animate__animated animate__fadeIn">
+   <div class="mx-auto w-screen max-w-7xl px-4 py-16 sm:px-6 sm:py-24 md:grid md:grid-cols-2 md:items-center md:gap-4 lg:px-8 lg:py-32">
+      <div class="max-w-prose text-center">
+         <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl">
+            تماس با کولیب <i class="fa-solid fa-phone" style="color: #2fc307;"></i>
+         </h1>
+         <p class="mt-4 text-base text-pretty text-gray-700 sm:text-lg/relaxed">
+            اگر سوالی داری، مشکلی پیش اومده یا قصد همکاری داری، میتونی با راه های زیر، با کولیب تماس بگیری و پیامت رو به ما برسونی. ما پیام هارو میخونیم و بررسی میکنیم و در صورت لزوم برای شما پیام ارسال میکنیم! پاسخ شما پس از تیکت، به صورت ایمیل دریافت خواهد شد.
+         </p>
+
+         <div class="mt-5 flex gap-10 justify-center">
+            <strong>آدرس ایمیل : <span style="color: #2fc307;">info@qulib.ir</span></strong>
+            <strong >آدرس ایمیل امنیتی: <span style="color: #fc8669;">security@qulib.ir</span></strong>
+         </div>
+
+         <br>
+
+         <a href="/faq/"><button class="w-11/12 bg-green-500 px-6 py-3 text-sm font-bold tracking-wide text-white uppercase transition-none rounded-sm hover:bg-green-600 sm:mt-0 sm:w-auto sm:shrink-0" fdprocessedid="zqre3s">
+         سوال ساده ای داری؟ سوالات متداول رو چک کن
+         </button></a>
+
+         
+      </div>
+      <img src="{% static 'images/contact-us.webp' %}" alt="تماس با ما" title="تماس با ما">
+   </div>
+</section>
+
+
+<div class="flex gap-10 w-full flex-wrap md:flex-nowrap items-center justify-center">
+
+    <form method="post" class="mx-auto w-full md:w-1/2 space-y-4 contact-form rounded-lg  p-6">
+
+        <strong class="text-red-700 text-2xl">تمامی فیلد های زیر اجباری هستند</strong>
+
+        <br><br>
+
+        {% csrf_token %}
+    
+        {{ form }}
+
+    <button class="block w-full rounded-lg border border-green-600 bg-green-600 px-12 py-3 text-sm font-medium text-white transition-colors hover:bg-transparent hover:text-green-600" type="submit" fdprocessedid="7f4uw">
+    ارسال پیام به کولیب
+    </button>
+    </form>
+
+
+    <div class="gap-5 w-1/2">
+
+        <div class="w-full h-full flex flex-col items-center justify-center gap-5">
+            <iframe src="https://balad.ir/embed?p=PtkBvpcbn6DfHV" title="مشاهده «مدرسه راهنمایی پسرانه شهید صادقی» روی نقشه بلد" height="600" frameborder="0" class="border-0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="hidden" id="alert_element" data-state="{{ state }}"></div>
+
+
+{% endblock %}

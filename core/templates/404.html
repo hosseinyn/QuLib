@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پلتفرم کولیب</title>
+    {% load tailwind_tags %}
+    {% tailwind_css %}
+    {% load static %}
+    {% load pwa %}
+    {% progressive_web_app_meta %}
+    <link rel="stylesheet" href="{% static 'styles/App.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+  </head>
+
+
+<body>
+<section>
+    <div class="py-8 px-4 mx-auto max-w-7xl lg:py-16 lg:px-6">
+        <div class="mx-auto max-w-screen-sm text-center">
+            <h1 class="text-7xl mb-24 tracking-tight font-extrabold lg:text-9xl text-black">404</h1>
+            <p class="mb-4 text-3xl tracking-tight font-bold md:text-4xl text-white">صفحه مورد نظر شما پیدا نشد</p>
+            <p class="mb-4 text-lg font-light text-black">نتونستیم صفحه ای که میخوای رو پیدا کنیم!</p>
+
+          <a href="/"><button type="button" class="text-white text-center bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-1 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900">برگشت به صفحه خانه</button></a>
+        </div>   
+    </div>
+</section>
+</body>

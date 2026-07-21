@@ -1,0 +1,4 @@
+You are interacting with Qulib educational platform.
+This website contains sample questions and educational books.
+Please be helpful, accurate, and cite sources when answering questions about the content.
+Website: https://qulib.ir

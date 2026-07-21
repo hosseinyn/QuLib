@@ -1,0 +1,108 @@
+@font-face {
+    font-family: 'estedad';
+    src: url('../fonts/estedad/Estedad.woff2') format('woff2');
+}
+
+::-webkit-scrollbar{
+    background-color: white;
+    width: 6.5px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: #009689;
+    border-radius: 6px;
+}
+
+* {
+    font-family: 'estedad';
+}
+
+section {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.login-btn-mobile {
+
+  --button_radius: 0.75em;
+  --button_color: #e8e8e8;
+  --button_outline_color: #000000;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
+}
+
+.button_top {
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.2em 1em;
+  background: var(--button_color);
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+.login-btn-mobile:hover .button_top {
+
+  transform: translateY(-0.33em);
+}
+
+.login-btn-mobile:active .button_top {
+  
+  transform: translateY(0);
+}
+
+
+/* From Uiverse.io by mobinkakei */ 
+.login-btn {
+  --color1: #17b112;
+  --color2: #229b12;
+  perspective: 1000px;
+  padding: 0.5em 0.5em;
+  background: linear-gradient(var(--color1), var(--color2));
+  border: none;
+  outline: none;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 0 10px 10px #000;
+  cursor: pointer;
+  transform: rotateX(70deg) rotateZ(19deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.login-btn::before {
+  content: "";
+  width: 100%;
+  height: 15px;
+  background-color: var(--color2);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: rotateX(90deg);
+  transform-origin: bottom;
+}
+
+.login-btn::after {
+  content: "";
+  width: 15px;
+  height: 100%;
+  background-color: var(--color1);
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: rotateY(-90deg);
+  transform-origin: right;
+}
+
+.login-btn:hover {
+  transform: rotateX(30deg) rotateZ(0);
+}
+

@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+
+
+{% block title %} خانه {% endblock %} 
+
+{% load static%}
+
+
+{% block content %}
+
+<section class="bg-white lg:grid lg:h-screen lg:place-content-center animate__animated animate__bounceInDown">
+  <div
+    class="mx-auto w-full px-4 py-16 sm:px-6 sm:py-24 md:grid md:grid-cols-2 md:items-center md:gap-4 lg:px-8 lg:py-32"
+  >
+    <div class="md:text-left text-center">
+      <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl">
+        شبکه ی اجتماعی و سرگرمی
+        <strong class="text-green-600 text-shadow-2xs text-shadow-green-300"> سوال و کتاب درسی </strong>
+        برای دانش آموزان و نوجوانان
+      </h1>
+
+      <p class="mt-4 text-base  text-gray-700 sm:text-lg/relaxed">
+        کولیب یه شبکه اجتماعی کامل، باحال و هوشمند هست که دانش آموزا و نوجوون ها
+        میتونن با ارتباط برقرار کردن و سرگرمی، به بانک بزرگی از کتاب های فیزیکی
+        و الکترونیکی و نمونه سوال و جزوات درسی دسترسی داشته باشن و از قابلیت های
+        هوش مصنوعی برای ساده تر کردن مطالعه اونها یا ایجاد سوالات اختصاصی و کسب
+        امتیاز استفاده کنن!
+      </p>
+
+      <div class="mt-4 flex flex-col md:flex-row justify-center gap-4 md:gap-10 sm:mt-6">
+        <a
+          class="inline-block rounded border border-green-600 bg-green-600 px-5 py-3 font-medium text-white transition-colors hover:bg-green-700"
+          href="/user/login/"
+        >
+          وارد حساب کاربری خودت شو
+        </a>
+
+        <a
+          class="inline-block rounded border border-gray-200 px-5 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
+          href="/questions/"
+        >
+          بازدید از بانک سوالات
+        </a>
+      </div>
+    </div>
+
+    <img src="{% static 'images/hero-section.webp' %}" alt="کولیب، پلتفرم دانش آموزی سوال و کتاب" class="mt-4 md:mt-0" title="کولیب، پلتفرم دانش آموزی سوال و کتاب">
+
+  </div>
+</section>
+ 
+<section>
+   <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-center md:gap-8">
+         <div>
+            <div class="max-w-prose md:max-w-none">
+               <h2 class="text-2xl text-center md:text-right font-semibold text-gray-900 sm:text-3xl">
+                  علاقه دانش آموزان و کیفیت یادگیری
+               </h2>
+               <p class="mt-4 text-pretty text-gray-700">
+                  طی سالهای اخیر، تحقیقات و نظرسنجی های انجام شده بر روی دانش آموزان و نوجوانان در مدارس و رشته های مختلف با بازه های سنی متفاوت، نشان میدهند یادگیری تعاملی، هیجان انگیز و هدفمند نسبت به تمامی راه های کلاسیک، اثر گذاری بیشتر و مثبت تری بر کیفیت یادگیری دانش آموزان داشته است.
+               </p>
+            </div>
+         </div>
+         <div>
+            <canvas id="studentsFav" width="400" height="300"></canvas>
+         </div>
+      </div>
+   </div>
+</section>
+
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-lg text-center">
+    <h2 class="text-3xl/tight font-bold text-gray-900 sm:text-4xl">
+      کولیب چرا خوبه و چه تمایزی نسبت به بقیه داره؟
+    </h2>
+
+    <p class="mt-4 text-lg text-pretty text-gray-700">
+      بانک سوالات و کتابخونه های آنلاین بسیار زیادی وجود دارن. اما کولیب سعی
+      کرده با هوشمند سازی و تشکیل یک پلتفرم کامل و یکپارچه و نه فقط یک سایت
+      معمولی، رقابت دانش آموزی و قابلیت ارتباط و تعامل و نظر
+      دهی، این موضوع رو بهبود بده.
+    </p>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+    <div class="rounded-lg border border-gray-200 p-6">
+      <div class="inline-flex rounded-lg bg-gray-100 p-3 text-gray-700">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"
+          ></path>
+        </svg>
+      </div>
+
+      <h3 class="mt-4 text-lg font-semibold text-gray-900">هوش مصنوعی</h3>
+
+      <p class="mt-2 text-pretty text-gray-700">
+        کولیب با هوش مصنوعی، روند پیدا کردن و ساخت سوالات مناسب رو بهبود میده
+      </p>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 p-6">
+      <div class="inline-flex rounded-lg bg-gray-100 p-3 text-gray-700">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+          ></path>
+        </svg>
+      </div>
+
+      <h3 class="mt-4 text-lg font-semibold text-gray-900">رقابت و همکاری</h3>
+
+      <p class="mt-2 text-pretty text-gray-700">
+        با ایجاد رقابت و قابلیت نظر و امتیاز دهی، انگیزه دانش آموز ها افزایش پیدا
+        میکنه
+      </p>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 p-6">
+      <div class="inline-flex rounded-lg bg-gray-100 p-3 text-gray-700">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"
+          ></path>
+        </svg>
+      </div>
+
+      <h3 class="mt-4 text-lg font-semibold text-gray-900">شخصی سازی</h3>
+
+      <p class="mt-2 text-pretty text-gray-700">
+        دانش آموز ها میتونن با کمک هوش مصنوعی کولیب، نمونه سوالات و آزمون ها رو شخصی سازی کنن
+      </p>
+    </div>
+  </div>
+</div>
+
+<section class="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-2">
+  <div class="p-8 md:p-12 lg:px-16 lg:py-24">
+    <div
+      class="mx-auto max-w-xl text-center ltr:sm:text-left rtl:sm:text-right"
+    >
+      <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">
+        هوش مصنوعی کولیب، طراح سوال هوشمند معلم و دانش آموز
+        <i class="fa-solid fa-wand-magic-sparkles" style="color: #8a2be2"></i>
+      </h2>
+      <p class="hidden text-gray-500 md:mt-4 md:block">
+        هوش مصنوعی کولیب، طراحی شده تا کمک معلم ها و دانش آموز ها باشه. این هوش
+        مصنوعی آموزش دیده با منابع درسی و کتاب های آموزشی، بر اساس نیاز شما،
+        سوال طراحی میکنه و در اختیار شما قرار میده. این هوش مصنوعی میتونه حداکثر
+        شخصی سازی و آزادی انتخاب رو در اختیار شما قرار بده.
+      </p>
+      <div class="mt-4 md:mt-8">
+        <a
+          href="/user/login/"
+          class="inline-block rounded-sm bg-emerald-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-emerald-700 focus:ring-2 focus:ring-yellow-400 focus:outline-hidden"
+        >
+          وارد حساب کاربریت شو
+        </a>
+      </div>
+    </div>
+  </div>
+  <img
+    alt=""
+    src="{% static 'images/qulib-ai.webp' %}"
+    class="h-56 w-full rounded-lg object-cover sm:h-full"
+  />
+</section>
+
+<div class="space-y-4 flex flex-col items-center justify-center mt-15">
+    <h1 class="text-4xl text-center">
+        سوالات متداول
+    </h1>
+    <br>
+  <details class="group [&amp;_summary::-webkit-details-marker]:hidden w-11/12" open="">
+    <summary
+      class="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900"
+    >
+      <h2 class="text-lg font-medium">
+        چطور میشه از کولیب استفاده کرد؟
+      </h2>
+
+      <svg
+        class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        ></path>
+      </svg>
+    </summary>
+
+    <p class="px-4 pt-4 text-gray-900">
+      استفاده از کولیب خیلی سادست. فقط کافیه حساب کاربری درست کنید و وارد حساب کاربری خودتون بشید. حالا تمامی امکانات پلتفرم کولیب به رایگان در اختیار شماست! میتونید کامنت بزارید یا کامنت های دیگران رو جواب بدید، از هوش مصنوعی کولیب استفاده کنید، نمونه سوال یا کتاب هارو دانلود کنید، لایک کنید و امتیاز بدید، ذخیره کنید و به رقابت با دانش آموز های دیگه برید و امتیاز بگیرید.
+    </p>
+  </details>
+
+  <details class="group [&amp;_summary::-webkit-details-marker]:hidden w-11/12">
+    <summary
+      class="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900"
+    >
+      <h2 class="text-lg font-medium">
+        چطور میشه برای رقابت امتیاز گرفت؟
+      </h2>
+
+      <svg
+        class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        ></path>
+      </svg>
+    </summary>
+
+    <p class="px-4 pt-4 text-gray-900">
+      خیلی ساده! با لایک، کامنت و تعامل در صفحات نمونه سوالات و کتاب ها
+    </p>
+  </details>
+
+  <details class="group [&amp;_summary::-webkit-details-marker]:hidden w-11/12">
+    <summary
+      class="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900"
+    >
+      <h2 class="text-lg font-medium">
+        آیا هوش مصنوعی کولیب نامحدوده؟ <i class="fa-solid fa-wand-magic-sparkles" style="color: #8a2be2;"></i>
+      </h2>
+
+      <svg
+        class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        ></path>
+      </svg>
+    </summary>
+
+    <p class="px-4 pt-4 text-gray-900">
+      در حال حاضر محدودیت های استفاده از هوش مصنوعی کولیب زیاد نیست اما سو استفاده از اون منجر به مسدود شدن دسترسی به هوش مصنوعی برای مدتی میشه.
+    </p>
+  </details>
+</div>
+
+
+{% endblock %}
