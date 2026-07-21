@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ question.title }} {% endblock %}
+
+{% load static %}
+
+{% block custom_meta %}
+
+<meta name="description" content="{{ question.description }}">
+    
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    
+    <meta property="og:title" content="پلتفرم سوال و کتاب درسی کولیب">
+    <meta property="og:description" content="{{ question.title }} | پلتفرم نمونه سوال و کتاب های کمک درسی کولیب">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% static 'images/Logo.png' %}">
+    <meta property="og:site_name" content="کولیب">
+
+{% endblock %}
+
+{% load jformat %}
+
+{% block custom_link %} 
+<link rel="stylesheet" href="{% static 'css/banks.css' %}">
+{% endblock %}
+
+{% block custom_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+<script src="{% static 'lib/sweetalert/all.min.js' %}"></script>
+<script src="{% static 'js/question_page.js' %}"></script>
+<script src="{% static 'js/share.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<section class="bg-white py-20">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16">
+      
+      <div class="lg:col-span-7">
+        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+          <div class="px-6 py-5 border-b border-gray-200 flex items-center justify-between bg-zinc-50">
+            <div class="flex items-center gap-3">
+              <span class="font-medium text-zinc-700">پیش‌نمایش سوال</span>
+            </div>
+          </div>
+          <div class="p-8 bg-zinc-50 flex justify-center">
+            <canvas 
+              id="pdf-canvas" 
+              data-url="{{ question.file.url }}"
+              class="max-h-160 w-full max-w-2xl border border-gray-200 rounded-2xl shadow-sm">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 space-y-10">
+        
+        <div>
+          <h1 class="text-4xl font-semibold text-zinc-900 leading-tight">
+            {{ question.title }}
+          </h1>
+          
+          <div class="mt-6 flex items-center gap-5">
+            <div class="flex">
+              {% for i in avg_scores %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21 16.54 13.47 22 9.24 14.81 8.62 12 2 9.19 8.62 2 9.24 7.46 13.47 5.82 21z"/>
+                </svg>
+              {% endfor %}
+            </div>
+            <div class="text-sm text-zinc-600">
+              <span class="font-medium text-zinc-900">{{ avg_score }}</span>
+              <span class="mx-2 text-gray-300">•</span>
+              <a href="#comments" class="hover:text-emerald-600 transition-colors">{{ comments_count }} دیدگاه</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="{{ question.file.url }}" download
+             class="flex items-center justify-center gap-3 bg-red-400 hover:bg-red-600 duration-700 text-white font-medium py-3.5 px-7 rounded-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.25">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            دانلود PDF
+          </a>
+          
+          <div class="flex-1">
+            <button type="button" id="convert-btn" data-question="{{ question.id }}" onclick="handleConvert()"
+                    class="w-full flex items-center justify-center gap-3 bg-sky-600 hover:bg-sky-700 text-white font-medium py-3.5 px-7 rounded-xl duration-700 cursor-pointer">
+              <i class="fa-regular fa-file-word"></i>
+              تبدیل به ورد
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="{{ question.file.url }}" target="_blank"
+             class="flex-1 flex items-center justify-center gap-3 border border-gray-200 hover:border-gray-300 transition-colors text-zinc-700 font-medium py-3.5 px-7 rounded-xl">
+            <i class="fa-regular fa-file-pdf text-lg"></i>
+            مشاهده آنلاین
+          </a>
+          
+          <button id="shareBtn"
+                  data-title="{{ question.title }}"
+                  data-decscripion="{{ question.description }}"
+                  class="flex-1 flex items-center justify-center gap-3 border border-gray-200 hover:border-gray-300 transition-colors text-zinc-700 font-medium py-3.5 px-7 rounded-xl cursor-pointer">
+            <i class="fa-solid fa-share-nodes"></i>
+            اشتراک گذاری
+          </button>
+        </div>
+
+        <div class="border border-gray-200 rounded-3xl p-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="flex gap-4">
+              <span class="text-xl text-emerald-600">👤</span>
+              <div>
+                <p class="text-xs tracking-widest text-gray-500">طراح</p>
+                <p class="font-medium text-zinc-800 mt-0.5">{{ question.writer }}</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <span class="text-xl text-emerald-600">❕</span>
+              <div>
+                <p class="text-xs tracking-widest text-gray-500">سختی</p>
+                <p class="font-medium text-zinc-800 mt-0.5">{{ question.difficulty }}</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <span class="text-xl text-emerald-600">🏫</span>
+              <div>
+                <p class="text-xs tracking-widest text-gray-500">مدرسه</p>
+                <p class="font-medium text-zinc-800 mt-0.5">{{ question.school_name }}</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <span class="text-xl text-emerald-600">🎒</span>
+              <div>
+                <p class="text-xs tracking-widest text-gray-500">پایه تحصیلی</p>
+                <p class="font-medium text-zinc-800 mt-0.5">{{ question.grade }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="border-t border-gray-100 my-7"></div>
+          
+          <div>
+            <p class="text-xs tracking-widest text-gray-500 mb-3">تگ</p>
+            <div class="flex flex-wrap gap-2">
+              {% for tag in question.tags.all %}
+                <span class="bg-zinc-100 text-zinc-700 text-xs px-4 py-2 rounded-2xl">#{{ tag.name }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          
+          <div class="mt-6 flex items-center gap-2 text-sm text-zinc-600">
+            پاسخنامه: 
+            <span class="font-medium {% if question.is_solved %}text-emerald-600{% else %}text-rose-500{% endif %}">
+              {% if question.is_solved %}دارد{% else %}ندارد{% endif %}
+            </span>
+          </div>
+        </div>
+
+        {% if not is_liked %}
+        <form method="post" action="/questions/like/" class="inline-block">
+          {% csrf_token %}
+          <input type="hidden" name="question_id" value="{{ question.id }}">
+          <button type="submit" class="flex items-center gap-3 text-zinc-700">
+            <i class="fa-regular fa-heart text-2xl"></i>
+            <span class="text-xl font-medium">{{ question.likes_count }}</span>
+          </button>
+        </form>
+        {% else %}
+        <form method="post" action="/questions/unlike/" class="inline-block">
+          {% csrf_token %}
+          <input type="hidden" name="question_id" value="{{ question.id }}">
+          <button type="submit" class="flex items-center gap-3 text-rose-600">
+            <i class="fa-solid fa-heart text-2xl"></i>
+            <span class="text-xl font-medium">{{ question.likes_count }}</span>
+          </button>
+        </form>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <div class="mt-8 border-t border-gray-100 pt-8 w-full">
+          <p class="text-zinc-600 leading-relaxed w-11/12 text-[15.5px]">
+            {{ question.description }}
+          </p>
+        </div>
+
+    <div class="mt-30 w-full md:w-1/2 mx-auto" id="comments">
+      <h2 class="text-2xl font-semibold text-zinc-900 mb-2">دیدگاه‌ها</h2>
+      <p class="text-zinc-500 mb-10">نظرات و تجربیات سایر دانش‌آموزان</p>
+
+      {% if not comment_message %}
+      <div class="border border-gray-200 rounded-2xl p-9 mb-16">
+        <form method="post" class="space-y-8">
+          {% csrf_token %}
+
+          <div>
+            <p class="text-sm text-zinc-500 mb-4">امتیاز شما به این سوال</p>
+            <div class="rating flex gap-2 text-4xl">
+              <input value="5" name="rating" id="star5" type="radio" required>
+              <label for="star5" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="4" name="rating" id="star4" type="radio" required>
+              <label for="star4" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="3" name="rating" id="star3" type="radio" required>
+              <label for="star3" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="2" name="rating" id="star2" type="radio" required>
+              <label for="star2" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="1" name="rating" id="star1" type="radio" required>
+              <label for="star1" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+            </div>
+          </div>
+
+          <textarea name="message" rows="5" required
+                    class="w-full border border-gray-200 focus:border-emerald-600 rounded-xl px-6 py-5 text-base placeholder:text-zinc-400 focus:outline-none resize-none"
+                    placeholder="نظر خود را اینجا بنویسید..."></textarea>
+
+          {% if error %}
+            <p class="text-rose-500">{{ error }}</p>
+          {% endif %}
+
+          <button type="submit"
+                  class="md:w-1/4 w-1/2 bg-emerald-600 hover:bg-emerald-700 duration-700 text-white font-medium py-2.5 cursor-pointer rounded-xl text-lg">
+            ثبت دیدگاه
+          </button>
+        </form>
+      </div>
+      {% else %}
+      <div class="border border-gray-200 rounded-2xl p-9 mb-16">
+        <form method="post" action="/questions/edit-comment/" class="space-y-8">
+          {% csrf_token %}
+          <input type="hidden" name="_method" value="post">
+          <input type="hidden" name="comment_id" value="{{ comment_id }}">
+          <input type="hidden" name="question_slug" value="{{ question.slug }}">
+
+          <div>
+            <p class="text-sm text-zinc-500 mb-4">امتیاز شما به این سوال</p>
+            <div class="rating flex gap-2 text-4xl">
+              <input value="5" name="rating" id="star5" type="radio" required>
+              <label for="star5" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="4" name="rating" id="star4" type="radio" required>
+              <label for="star4" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="3" name="rating" id="star3" type="radio" required>
+              <label for="star3" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="2" name="rating" id="star2" type="radio" required>
+              <label for="star2" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+              <input value="1" name="rating" id="star1" type="radio" required>
+              <label for="star1" class="cursor-pointer text-gray-200 hover:text-amber-400 transition-colors">★</label>
+            </div>
+          </div>
+
+          <textarea name="message" rows="5" required
+                    class="w-full border border-gray-200 focus:border-emerald-600 focus:outline-none rounded-2xl px-6 py-5 text-base resize-none">{{ comment_message }}</textarea>
+
+          {% if error %}
+            <p class="text-rose-500">{{ error }}</p>
+          {% endif %}
+
+          <button type="submit"
+                  class="md:w-1/4 w-1/2 bg-emerald-600 hover:bg-emerald-700 duration-700 text-white font-medium py-2.5 cursor-pointer rounded-xl text-lg">
+            ویرایش
+          </button>
+        </form>
+      </div>
+      {% endif %}
+
+      <div class="space-y-8">
+        {% for comment in comments %}
+        <div class="border border-gray-200 rounded-xl p-8 group">
+          <div class="flex gap-6">
+            <div>
+              {% if comment.user_profile.profile_picture == 1 %}
+                <img src="{% static 'images/profile1.jpg' %}" class="w-12 h-12 rounded-full"alt="{{ comment.user.username }}">
+              {% elif comment.user_profile.profile_picture == 2 %}
+                <img src="{% static 'images/profile2.jpg' %}" class="w-12 h-12 rounded-full" alt="{{ comment.user.username }}">
+              {% elif comment.user_profile.profile_picture == 3 %}
+                <img src="{% static 'images/profile3.jpg' %}" class="w-12 h-12 rounded-full" alt="{{ comment.user.username }}">
+              {% endif %}
+            </div>
+            
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center justify-center gap-3">
+                  <a href="/user/person/{{ comment.comment_by.username }}" class="font-semibold text-zinc-900 hover:text-emerald-600">
+                    {{ comment.comment_by.username }}
+                  </a>
+                  <span class="text-xs text-gray-400">{{ comment.created_at|jformat:"%Y/%m/%d" }}</span>
+                </div>
+                
+                {% if comment.user_profile.user == request.user %}
+                <div class="flex gap-1 opacity-60 group-hover:opacity-100 transition-all">
+                  <form action="/questions/edit-comment/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="_method" value="get">
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    <input type="hidden" name="question_slug" value="{{ question.slug }}">
+                    <button type="submit" class="w-9 h-9 flex items-center justify-center text-zinc-400 hover:text-emerald-600 hover:bg-zinc-100 rounded-xl">
+                      <i class="fa-solid fa-pencil text-sm"></i>
+                    </button>
+                  </form>
+                  <form action="/questions/delete-comment/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="question_slug" value="{{ question.slug }}">
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    <button type="submit" class="w-9 h-9 flex items-center justify-center text-zinc-400 hover:text-rose-500 hover:bg-zinc-100 rounded-xl">
+                      <i class="fa-solid fa-trash text-sm"></i>
+                    </button>
+                  </form>
+                </div>
+                {% endif %}
+              </div>
+              
+              <div class="mt-5 text-zinc-600 leading-relaxed">
+                {{ comment.message }}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

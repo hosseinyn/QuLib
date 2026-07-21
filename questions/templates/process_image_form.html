@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %} پردازش تصویر {% endblock %}
+
+{% load static %}
+
+{% block custom_link %} 
+
+<link rel="stylesheet" href="{% static 'css/banks.css' %}">
+
+{% endblock %}
+
+{% block custom_js %}
+
+<script src="{% static 'lib/sweetalert/all.min.js' %}"></script>
+<script src="{% static 'js/image_upload.js' %}"></script>
+
+    <script id="MathJax-script"
+    async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+<script src="{% static 'js/ai_jobs.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<p class="mt-15 font-bold text-center mb-0">⌛ نسخه آزمایشی</p>
+<h1 class="text-4xl text-center mt-5 font-bold">
+    پردازش فایل و سوال تصویر 📁🖼️
+</h1>
+<pre class="mt-2 p-5 text-center whitespace-pre-wrap break-words max-w-full overflow-x-auto">
+    تصویر های دست نویس عموما قابل پردازش نیستند
+    تصاویری که دارای کیفیت بسیار پایین، و فونت های خاص باشند قابل پردازش نیستند 
+    برخی کاراکتر های خاص و المان های خاص از تصویر قابل استخراج نیستند
+</pre>
+
+<form method="post" id="upload_form" enctype="multipart/form-data" class="flex flex-col gap-5 mt-5 justify-center items-center animate__animated animate__tada">
+    {% csrf_token %}
+    <div class="file-input">
+        <input type="file" id="image_file" class="file" name="image_file" accept="image/*">
+        <label for="image_file">
+           فایلتو انتخاب کن
+        </label>
+        <p class="file-name mt-5"></p>
+    </div>
+
+    {% if error %}
+
+    <p class="text-red-600 mt-5 mb-2">{{ error }}</p>
+
+    {% endif %}
+
+</form>
+
+{% if text %}
+
+<h1 class="text-4xl text-center mt-15">
+    محتوای فایل تصویر :
+</h1>
+
+<pre class="mt-2 p-10 whitespace-pre-wrap wrap-break-word max-w-full overflow-x-auto">{{ text }}</pre>
+
+<div class="flex gap-5 flex-wrap md:flex-nowrap">
+        <form action="/qulib-ai/difficulty-detector/" method="post" id="difficulty-detector">
+            <input type="hidden" name="text" value="{{ text }}">
+            <input type="hidden" name="from" value="pdf">
+            <button type="button"
+                onclick="handleDetectDifficulty()"
+                class="inline-block cursor-pointer mr-10 bg-transparent font-bold text-green-600"
+                >
+                تشخیص سطح سختی سوال <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </form>
+
+        <form action="/qulib-ai/create-same-question/" method="post" id="create-same-question">
+            <input type="hidden" name="text" value="{{ text }}">
+            <input type="hidden" name="from" value="pdf">
+            <button type="button"
+                onclick="handleCreateSameQuestion()"
+                class="inline-block cursor-pointer mr-10 bg-transparent font-bold text-orange-600"
+                >
+                ساخت نمونه سوال مشابه <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </form>
+
+        <form action="/qulib-ai/solve-text/" method="post" id="solve-text">
+            <input type="hidden" name="text" value="{{ text }}">
+            <input type="hidden" name="from" value="pdf">
+            <button type="button"
+                onclick="handleSolveQuestion()"
+                class="inline-block cursor-pointer mr-10 bg-transparent font-bold text-pink-800"
+                >
+                ساخت پاسخنامه <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </form>
+    </div>
+
+{% if ai_response %}
+<h3 class="text-2xl text-center mt-10 mb-5 text-purple-600 font-bold">
+    سطح سختی : {{ ai_response }}
+</h3>
+{% endif %}
+
+{% if ai_question %}
+<h3 class="text-2xl text-center mt-10 mb-5 text-purple-600 font-bold">
+    نمونه سوال مشابه :
+</h3>
+
+<div class="flex justify-center items-center flex-col gap-5 w-11/12 mt-10 mr-5">
+      
+        <p class="text-center">{{ ai_question|safe }}</p>
+
+    </div>
+
+{% endif %}
+
+{% if ai_solve %}
+<h3 class="text-2xl text-center mt-10 mb-5 text-purple-600 font-bold">
+    پاسخنامه ایجاد شده :
+</h3>
+
+<div class="flex justify-center items-center flex-col gap-5 w-11/12 mt-10 mr-5">
+      
+        <p class="text-center">{{ ai_solve|safe }}</p>
+
+    </div>
+
+{% endif %}
+
+{% endif %}
+
+<br>
+
+{% endblock %}
