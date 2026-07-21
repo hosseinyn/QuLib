@@ -1,0 +1,49 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Build containers
+        run: docker compose build
+
+      - name: Start services
+        run: docker compose up -d
+
+      - name: Wait for Django
+        run: |
+          until docker compose exec -T django python manage.py check > /dev/null 2>&1
+          do
+            sleep 3
+          done
+
+      - name: Create Elasticsearch index
+        run: |
+          docker compose exec -T django \
+          python manage.py search_index --rebuild -f
+
+      - name: Run tests
+        run: |
+          docker compose exec -T django \
+          python manage.py test
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Shutdown
+        if: always()
+        run: docker compose down -v
