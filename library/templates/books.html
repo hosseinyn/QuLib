@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %} بانک کتاب های کمک درسی {% endblock %}
+
+{% load static %}
+
+{% block custom_link %} 
+
+<link rel="stylesheet" href="{% static 'css/banks.css' %}">
+
+{% endblock %}
+
+{% block custom_js %}
+
+<script src="{% static 'js/search.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+<script src="{% static 'js/pdfs.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<h1 class="text-4xl mt-10 text-center font-bold">
+        بانک کتاب های کمک درسی 📚
+</h1>
+
+<div class="flex gap-10 flex-wrap md:flex-nowrap justify-center items-center mt-10">
+    <div class="flex items-center border pl-4 gap-2 border-gray-200 h-11.5 rounded-full overflow-hidden md:w-2/4 w-11/12">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 30 30" fill="#6B7280" class="mr-5">
+            <path d="M13 3C7.489 3 3 7.489 3 13s4.489 10 10 10a9.95 9.95 0 0 0 6.322-2.264l5.971 5.971a1 1 0 1 0 1.414-1.414l-5.97-5.97A9.95 9.95 0 0 0 23 13c0-5.511-4.489-10-10-10m0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8-8-3.57-8-8 3.57-8 8-8"/>
+        </svg>
+        <input id="searchInput" value="{{ search_query }}" type="text" placeholder="جستجو بین کتاب ها..." class="w-full h-full outline-none text-gray-500 bg-transparent placeholder-gray-500 text-sm">
+    </div>
+
+    <button class="search-btn" onclick="booksSearch()">
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> جستجو در بانک
+    </button>
+</div>
+
+<form method="post" class="flex flex-wrap md:flex-nowrap p-4 gap-7 items-center justify-center mt-10">
+    {% csrf_token %}
+    <label class="checkbox-container text-center">
+        <center><input name="haftom" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        پایه هفتم
+    </label>
+
+    <label class="checkbox-container text-center">
+        <center><input name="hashtom" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        پایه هشتم
+    </label>
+
+    <label class="checkbox-container text-center">
+        <center><input name="nohom" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        پایه نهم
+    </label>
+
+    |
+
+    <label class="checkbox-container text-center">
+        <center><input name="amoozeshi" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        آموزشی
+    </label>
+
+    <label class="checkbox-container text-center">
+        <center><input name="emtahani" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        امتحانی
+    </label>
+
+    <label class="checkbox-container text-center">
+        <center><input name="gambegam" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        گام به گام
+    </label>
+
+    |
+
+    <label class="checkbox-container text-center">
+        <center><input name="downloadble" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        قابل دانلود
+    </label>
+
+    <label class="checkbox-container text-center">
+        <center><input name="not-downloadble" type="checkbox">
+        <div class="checkmark"></div>
+        </center>
+        فیزیکی
+    </label>
+
+    <!-- From Uiverse.io by Gautammsharma --> 
+    <button class="comic-button" type="submit">اعمال فیلتر</button>
+
+
+</form>
+
+<div class="flex flex-row flex-wrap gap-10 md:mr-15 items-center justify-center md:justify-normal p-5 mt-5 mb-10 w-full">
+
+    {% if books %}
+
+        {% for book in books %}
+
+        {% include "book.html" with book=book %}
+
+        {% endfor %}
+
+    {% else %}
+        <span class="text-2xl text-gray-400 font-bold mt-15">
+            هیچ کتابی برای تو وجود نداره ☹️
+        </span>
+        
+    {% endif %}
+
+
+</div>
+
+{% if page_obj.has_other_pages %}
+<div class="flex justify-center items-center gap-2 mt-8 mb-12" dir="ltr">
+    {% if page_obj.has_previous %}
+    <a href="?page=1" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">«</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">قبلی</a>
+    {% endif %}
+
+    <span class="px-4 py-2 bg-blue-500 text-white rounded">
+        صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">بعدی</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">»</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

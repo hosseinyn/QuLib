@@ -1,0 +1,24 @@
+{% load static %}
+
+<a href="/books/book/{{ book.slug }}"><div class="flex-1 basis-1/3 rounded-xl min-w-0 border border-gray-200 overflow-hidden transition-transform duration-200 ease-out cursor-pointer w-80 bg-white">
+                {% if book.is_downloadable %}
+                <canvas data-url="{{ book.file.url }}" class="pdf-canvas rounded-lg w-full h-52 object-cover"></canvas>
+
+                {% else %}
+
+                <img src="{% static 'images/qulib-book.webp' %}" loading="lazy"
+                    alt="{{ book.title }}" class="w-full h-52 object-cover"
+                />
+
+                {% endif %}
+
+                <p class="mt-3 px-4 pt-3 text-sm font-semibold">
+                    {{ book.school_name }} | <span class="text-red-700">{{ book.publisher }}</span>
+                </p>
+                <h3 class="px-4 pt-3 mb-1 text-lg font-semibold text-gray-800">
+                    {{ book.title }}
+                </h3>
+                <p class="text-sm truncate px-4 pb-6 text-gray-600 w-5/6">
+                    {{ book.description|truncatechars:230 }}
+                </p>
+    </div></a>
