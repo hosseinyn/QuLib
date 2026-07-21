@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خبرنامه | کولیب</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+        
+        * {
+            font-family: 'Vazirmatn', sans-serif !important;
+        }
+
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                padding: 20px !important;
+            }
+            .content-box {
+                padding: 24px !important;
+            }
+            .cta-button {
+                display: block !important;
+                text-align: center !important;
+                padding: 14px 0 !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; direction: rtl; text-align: right; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+
+    <main style="width: 100%; padding: 40px 0; display: flex; justify-content: center;">
+        
+        <article class="email-container" style="width: 550px; margin: 0 auto; display: flex; flex-direction: column;">
+            
+            <header style="text-align: center; padding-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
+                <img src="{{ logo_url }}" alt="کولیب AI" style="height: 64px; border-radius: 8px; display: block; margin-bottom: 12px; border: none;">
+                <h2 style="margin: 0; color: #065f46; font-size: 22px; font-weight: 700;">پلتفرم کولیب</h2>
+            </header>
+
+            <section class="content-box" style="background-color: #ffffff; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0;">
+                
+                <h1 style="margin: 0 0 16px 0; color: #1e293b; font-size: 20px; font-weight: 700; line-height: 1.6;">{{ subject }}</h1>
+                
+                <p style="margin: 0 0 24px 0; color: #475569; font-size: 15px; line-height: 1.8;">
+                    {{ message|safe }}
+                </p>
+
+                <div style="margin: 30px auto; text-align: center;">
+                    <a href="{{ leave_url }}" target="_blank" class="cta-button" style="font-size: 16px; font-weight: 700; color: #ffffff; text-decoration: none; padding: 12px 20px; display: inline-block; border-radius: 7px; background-color: #96051d; border: 1px solid #960507;">
+                        لغو عضویت
+                    </a>
+                </div>
+                
+            </section>
+
+            <footer style="text-align: center; padding-top: 24px;">
+                <p style="margin: 0; color: #94a3b8; font-size: 12px; line-height: 1.6;">
+                   پلتفرم سوال و کتاب کمک درسی کولیب
+                </p>
+            </footer>
+
+        </article>
+    </main>
+
+</body>
+</html>
