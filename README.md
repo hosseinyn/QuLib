@@ -8,7 +8,7 @@
 
 <img src="https://skillicons.dev/icons?i=python,django,sqlite,postgresql,tailwindcss,js,html,css,git,github,docker,redis,elasticsearch,nginx" />
 
-<br>
+<br><br>
 
 <img src="https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white" />
 <img src="https://img.shields.io/badge/Django-6.x-092E20?logo=django&logoColor=white" />
