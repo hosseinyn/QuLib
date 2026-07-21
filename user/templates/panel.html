@@ -1,0 +1,151 @@
+{% extends 'base.html' %} 
+
+{% block title %} داشبورد {% endblock %} 
+
+{% load static %}
+
+{% block custom_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+    <script src="{% static 'js/pdfs.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+    <div class="bg-emerald-500 text-white rounded-xl md:rounded-2xl w-full p-6 md:p-10 mb-12">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8 w-full">
+        
+        <div class="flex flex-col sm:flex-row items-center text-center sm:text-right gap-6 w-full md:w-auto">
+            {% if profile_id == 1 %}
+            <div class="relative h-24 w-24 md:h-28 md:w-28 shrink-0">
+                <img src="{% static 'images/profile1.jpg' %}" class="h-full w-full rounded-2xl ring-4 ring-white/50 object-cover" />
+            </div>
+            {% elif profile_id == 2 %}
+            <div class="relative h-24 w-24 md:h-28 md:w-28 shrink-0">
+                <img src="{% static 'images/profile2.jpg' %}" class="h-full w-full rounded-2xl ring-4 ring-white/50 object-cover" />
+            </div>
+            {% elif profile_id == 3 %}
+            <div class="relative h-24 w-24 md:h-28 md:w-28 shrink-0">
+                <img src="{% static 'images/profile3.jpg' %}" class="h-full w-full rounded-2xl ring-4 ring-white/50 object-cover" />
+            </div>
+            {% endif %}
+
+            <div class="w-full sm:w-auto">
+                <h1 class="text-3xl md:text-5xl font-bold tracking-tight break-all flex items-center justify-center gap-4">
+                    {{ request.user.username }} 
+                    
+                    <form method="POST" action="/user/logout/" class="flex items-center">
+                        {% csrf_token %}
+                        <button type="submit" class="cursor-pointer flex items-center justify-center">
+                            <i class="fa-solid fa-sign-out text-xl text-red-400 p-3 bg-white rounded-xl flex items-center justify-center shadow-sm"></i>
+                        </button>
+                    </form>
+                </h1>
+                <div class="flex flex-col gap-1 mt-2 text-emerald-100">
+                    <p class="text-lg md:text-xl">🏫 {{ school_name }}</p>
+                    <p class="text-lg md:text-xl">🎒 پایه {{ grade }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full md:w-auto max-w-md">
+            <div class="text-center bg-white/10 backdrop-blur-md px-3 py-4 sm:px-8 sm:py-5 rounded-2xl sm:rounded-3xl">
+                <div class="text-2xl sm:text-4xl font-bold">{{ likes_count }}</div>
+                <div class="text-xs sm:text-sm tracking-widest uppercase mt-1">لایک</div>
+            </div>
+            <div class="text-center bg-white/10 backdrop-blur-md px-3 py-4 sm:px-8 sm:py-5 rounded-2xl sm:rounded-3xl">
+                <div class="text-2xl sm:text-4xl font-bold">{{ comments_count }}</div>
+                <div class="text-xs sm:text-sm tracking-widest uppercase mt-1">کامنت</div>
+            </div>
+            <div class="text-center bg-white/10 backdrop-blur-md px-3 py-4 sm:px-8 sm:py-5 rounded-2xl sm:rounded-3xl">
+                <div class="text-2xl sm:text-4xl font-bold">{{ score }}</div>
+                <div class="text-xs sm:text-sm tracking-widest uppercase mt-1">امتیاز</div>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-auto">
+            <a href="/user/edit/" class="bg-white text-black duration-300 hover:bg-neutral-100 font-semibold px-6 py-3.5 rounded-2xl sm:rounded-3xl flex items-center justify-center gap-3 text-nowrap w-full text-center">
+                ✏️ ویرایش پروفایل
+            </a>
+            <a href="/user/delete/" class="bg-red-400 text-white hover:bg-red-500 duration-300 transition-all font-semibold px-6 py-3.5 rounded-2xl sm:rounded-3xl flex items-center justify-center gap-3 text-nowrap w-full text-center">
+                حذف حساب
+            </a>
+        </div>
+
+    </div>
+</div>
+
+    <h1 class="text-4xl font-bold mb-8 flex items-center gap-4">
+        <span>🌺</span> نمونه سوال های لایک شده
+    </h1>
+
+    <div class="flex flex-wrap gap-8 items-stretch justify-center mb-16">
+        {% if liked_questions %}
+            {% for question in liked_questions %}
+                {% include "question.html" with question=question %}
+            {% endfor %}
+        {% else %}
+            <div class="w-full bg-white border border-gray-200 rounded-3xl p-16 text-center">
+                <div class="text-7xl mb-6">😞</div>
+                <p class="text-2xl font-bold text-black">هنوز نمونه سوالی لایک نکردی</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <h1 class="text-4xl font-bold text-black mb-8 flex items-center gap-4">
+        <span>📚</span> کتاب های لایک شده
+    </h1>
+
+    <div class="flex flex-wrap gap-8 items-stretch justify-center mb-16">
+        {% if liked_books %}
+            {% for book in liked_books %}
+                {% include "book.html" with book=book %}
+            {% endfor %}
+        {% else %}
+            <div class="w-full bg-white border border-gray-200 rounded-3xl p-16 text-center">
+                <div class="text-7xl mb-6">😞</div>
+                <p class="text-2xl font-bold text-black">هنوز کتابی لایک نکردی</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <h1 class="text-4xl font-bold text-black mb-8 flex items-center gap-4">
+        <span>🏆</span> افتخارات و نشان ها
+    </h1>
+
+    <div class="flex flex-wrap gap-10 justify-center mb-8">
+        {% if badges %}
+            {% for badge in badges %}
+                <div class="bg-white border border-gray-200 hover:border-emerald-300 transition-all rounded-3xl p-8 w-72 flex flex-col items-center text-center group">
+                    <div class="mb-6">
+                        {% if badge.name == "استارتر" %}
+                        <img
+                            src="{% static 'images/badges/starter-badge.jpg' %}"
+                            class="h-28 w-28 rounded-2xl ring-8 ring-emerald-100 group-hover:ring-emerald-200 transition-all"
+                        />
+                        {% elif badge.name == "لول دو" %}
+                        <img
+                            src="{% static 'images/badges/level2-badge.jpg' %}"
+                            class="h-28 w-28 rounded-2xl ring-8 ring-emerald-100 group-hover:ring-emerald-200 transition-all"
+                        />
+                        {% elif badge.name == "لجندری" %}
+                        <img
+                            src="{% static 'images/badges/legendry-badge.jpg' %}"
+                            class="h-28 w-28 rounded-2xl ring-8 ring-emerald-100 group-hover:ring-emerald-200 transition-all"
+                        />
+                        {% endif %}
+                    </div>
+                    <h2 class="text-3xl font-bold text-black mb-3">{{ badge.name }}</h2>
+                    <p class="text-black leading-relaxed">{{ badge.description }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="w-full bg-white border border-gray-200 rounded-3xl p-16 text-center">
+                <div class="text-7xl mb-6">😞</div>
+                <p class="text-2xl font-bold text-black">هنوز نشانی دریافت نکردی</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %} 
+
+{% block title %} پروفایل {{ profile_user.username }} {% endblock %} 
+
+{% load static %}
+
+{% block custom_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+    <script src="{% static 'js/pdfs.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+    
+    <div class="bg-emerald-500 text-white rounded-xl md:rounded-2xl w-full p-6 md:p-10 mb-14">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 w-full">
+        
+        <div class="flex flex-col sm:flex-row items-center text-center sm:text-right gap-6 w-full md:w-auto">
+            {% if profile_picture == 1 %}
+            <div class="relative h-28 w-28 shrink-0">
+                <img src="{% static 'images/profile1.jpg' %}" class="h-full w-full rounded-3xl ring-4 ring-white/60 object-cover" alt="">
+            </div>
+            {% elif profile_picture == 2 %}
+            <div class="relative h-28 w-28 shrink-0">
+                <img src="{% static 'images/profile2.jpg' %}" class="h-full w-full rounded-3xl ring-4 ring-white/60 object-cover" alt="">
+            </div>
+            {% elif profile_picture == 3 %}
+            <div class="relative h-28 w-28 shrink-0">
+                <img src="{% static 'images/profile3.jpg' %}" class="h-full w-full rounded-3xl ring-4 ring-white/60 object-cover" alt="">
+            </div>
+            {% endif %}
+
+            <div class="w-full sm:w-auto">
+                <h1 class="text-3xl md:text-4xl font-bold tracking-tight break-all">{{ username }}</h1>
+                <div class="flex flex-col gap-1 mt-3 text-emerald-100 text-base md:text-lg">
+                    <p>🏫 {{ school_name }}</p>
+                    <p>🎒 پایه {{ grade }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full md:w-auto max-w-md">
+            <div class="text-center bg-white/10 backdrop-blur-md px-3 py-5 sm:px-9 sm:py-6 rounded-2xl sm:rounded-3xl">
+                <div class="text-2xl sm:text-4xl font-bold">{{ likes_count }}</div>
+                <div class="text-xs sm:text-sm tracking-widest mt-1">لایک</div>
+            </div>
+            <div class="text-center bg-white/10 backdrop-blur-md px-3 py-5 sm:px-9 sm:py-6 rounded-2xl sm:rounded-3xl">
+                <div class="text-2xl sm:text-4xl font-bold">{{ comments_count }}</div>
+                <div class="text-xs sm:text-sm tracking-widest mt-1">کامنت</div>
+            </div>
+            <div class="text-center bg-white/10 backdrop-blur-md px-3 py-5 sm:px-9 sm:py-6 rounded-2xl sm:rounded-3xl">
+                <div class="text-2xl sm:text-4xl font-bold">{{ score }}</div>
+                <div class="text-xs sm:text-sm tracking-widest mt-1">امتیاز</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <h1 class="text-3xl font-bold mb-8 flex items-center gap-3 text-zinc-800">
+        <span>🌺</span> نمونه سوال‌های لایک شده
+    </h1>
+
+    <div class="flex flex-wrap justify-center gap-6 mb-16">
+        {% if liked_questions %}
+            {% for question in liked_questions %}
+                {% include "question.html" with question=question %}
+            {% endfor %}
+        {% else %}
+            <div class="w-full bg-white border border-gray-200 rounded-3xl p-20 text-center">
+                <p class="text-6xl mb-6">😌</p>
+                <p class="text-2xl font-medium text-zinc-700">هنوز نمونه سوالی لایک نکرده</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <h1 class="text-3xl font-bold mb-8 flex items-center gap-3 text-zinc-800">
+        <span>📚</span> کتاب‌های لایک شده
+    </h1>
+
+    <div class="flex flex-wrap justify-center gap-6 mb-16">
+        {% if liked_books %}
+            {% for book in liked_books %}
+                {% include "book.html" with book=book %}
+            {% endfor %}
+        {% else %}
+            <div class="w-full bg-white border border-gray-200 rounded-3xl p-20 text-center">
+                <p class="text-6xl mb-6">📖</p>
+                <p class="text-2xl font-medium text-zinc-700">هنوز کتابی لایک نکرده</p>
+            </div>
+        {% endif %}
+    </div>
+
+
+    <h1 class="text-3xl font-bold mb-8 flex items-center gap-3 text-zinc-800">
+        <span>🏆</span> افتخارات و نشان‌ها
+    </h1>
+
+    <div class="flex flex-wrap justify-center gap-6">
+        {% if badges %}
+            {% for badge in badges %}
+                <div class="bg-white border border-gray-200 hover:border-emerald-300 transition-all rounded-3xl p-8 text-center group">
+                    <div class="mb-6 flex justify-center">
+                        {% if badge.name == "استارتر" %}
+                            <img src="{% static 'images/badges/starter-badge.jpg' %}" 
+                                 class="h-28 w-28 rounded-2xl ring-8 ring-emerald-100 group-hover:ring-emerald-200 transition-all">
+                        {% elif badge.name == "لول دو" %}
+                            <img src="{% static 'images/badges/level2-badge.jpg' %}" 
+                                 class="h-28 w-28 rounded-2xl ring-8 ring-emerald-100 group-hover:ring-emerald-200 transition-all">
+                        {% elif badge.name == "لجندری" %}
+                            <img src="{% static 'images/badges/legendry-badge.jpg' %}" 
+                                 class="h-28 w-28 rounded-2xl ring-8 ring-emerald-100 group-hover:ring-emerald-200 transition-all">
+                        {% endif %}
+                    </div>
+                    <h3 class="font-bold text-xl text-zinc-900">{{ badge.name }}</h3>
+                    <p class="text-zinc-600 text-sm mt-3 leading-relaxed">{{ badge.description }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="w-full bg-white border border-gray-200 rounded-3xl p-20 text-center">
+                <p class="text-6xl mb-6">🏅</p>
+                <p class="text-2xl font-medium text-zinc-700">هنوز نشانی دریافت نکرده</p>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

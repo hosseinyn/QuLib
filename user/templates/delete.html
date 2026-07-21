@@ -1,0 +1,33 @@
+{% extends 'base.html' %} 
+
+{% block title %} حذف حساب کاربری {% endblock %} 
+
+{% load static %} 
+
+{% block content %}
+
+<form method="post" class="mt-10 flex flex-col gap-5 justify-center items-center">
+
+    {% csrf_token %}
+
+    <h1 class="text-center mt-10 text-4xl">
+        حذف حساب کاربری 😭
+    </h1>
+
+    <p class="text-center mb-3 w-2/3">
+        در صورت حذف حساب کاربری شما، تمامی افتخارات، حضور شما در لیدربرد، امتیاز ها، نمونه سوال ها و کتاب های ذخیره شده، قابلیت های هوش مصنوعی و کامنت های شما به صورت کامل و دائمی حذف خواهد شد. این مورد دیگر قابل بازگشت نخواهد بود. 
+    </p>
+
+    {{ form.reason }}
+
+    <button
+          class="inline-block rounded border border-red-600 bg-red-600 px-3 py-2 font-medium text-white shadow-sm transition-colors hover:bg-red-700 cursor-pointer duration-700"
+          type="submit"
+        >
+          موارد بالا رو خوندم، حسابم رو حذف کن
+    </button>
+
+</form>
+
+
+{% endblock %}
