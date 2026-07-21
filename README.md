@@ -4,6 +4,8 @@
 
 ### شبکه اجتماعی و پلتفرم هوشمند نمونه سوال و کتاب‌ های کمک درسی مبتنی بر **AI**
 
+![کولیب](qulib.png)
+
 <br>
 
 <img src="https://skillicons.dev/icons?i=python,django,sqlite,postgresql,tailwindcss,js,html,css,git,github,docker,redis,elasticsearch,nginx" />
