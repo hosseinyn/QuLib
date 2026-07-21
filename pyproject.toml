@@ -1,0 +1,7 @@
+[project]
+name = "qulib"
+version = "1.0.0"
+description = "AI-powered educational platform built with Django"
+requires-python = ">=3.12"
+
+[tool.uv]

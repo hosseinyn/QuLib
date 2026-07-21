@@ -1,0 +1,29 @@
+.git
+.gitignore
+
+venv
+.venv
+
+__pycache__
+*.pyc
+
+media
+staticfiles
+
+.env
+
+.idea
+.vscode
+
+README.md 
+مستندات
+تجاری سازی
+اسکرام
+الگوریتم ها
+بلاکچین
+مقیاس پذیری
+softwares
+
+node_modules
+
+*.sqlite3

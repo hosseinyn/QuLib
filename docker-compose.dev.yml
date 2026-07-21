@@ -1,0 +1,268 @@
+services:
+
+  django:
+    image: qulib:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: qulib_django
+
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      exec daphne -b 0.0.0.0 -p 8000 QuLib.asgi:application
+      "
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+
+    networks:
+      - qulib
+
+  celery:
+    image: qulib:latest
+
+    container_name: qulib_celery
+
+    command: celery -A QuLib worker -l INFO
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      django:
+        condition: service_started
+
+    volumes:
+      - .:/app
+
+    networks:
+      - qulib
+
+  postgres:
+    image: postgres:17
+
+    container_name: qulib_postgres
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+    networks:
+      - qulib
+
+  redis:
+    image: redis:7-alpine
+
+    container_name: qulib_redis
+
+    restart: unless-stopped
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --requirepass
+      - ${REDIS_PASSWORD}
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "-a",
+          "${REDIS_PASSWORD}",
+          "PING"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+    networks:
+      - qulib
+
+  elasticsearch:
+    image: elasticsearch:8.18.7
+
+    container_name: qulib_elasticsearch
+
+    restart: unless-stopped
+
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+
+    ports:
+      - "9200:9200"
+
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fs http://localhost:9200 >/dev/null || exit 1"
+        ]
+      interval: 20s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+    networks:
+      - qulib
+
+  minio:
+    image: minio/minio
+
+    container_name: qulib_minio
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    command: server /data --console-address ":9001"
+
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+    volumes:
+      - minio_data:/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fs http://localhost:9000/minio/health/live || exit 1"
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+    networks:
+      - qulib
+
+  minio-init:
+    image: minio/mc
+
+    container_name: qulib_minio_init
+
+    restart: "no"
+
+    env_file:
+      - .env
+
+    depends_on:
+      minio:
+        condition: service_healthy
+
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD; do
+        sleep 2;
+      done &&
+      mc mb --ignore-existing local/$$MINIO_BUCKET &&
+      mc anonymous set download local/$$MINIO_BUCKET
+      "
+
+    networks:
+      - qulib
+
+  mailpit:
+    image: axllent/mailpit:latest
+
+    container_name: qulib_mail
+
+    restart: unless-stopped
+
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--spider",
+          "-q",
+          "http://localhost:8025"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+    networks:
+      - qulib
+
+networks:
+  qulib:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  elasticsearch_data:
+  minio_data:
+  static_volume:

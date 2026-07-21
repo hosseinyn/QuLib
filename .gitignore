@@ -1,0 +1,109 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+# softwares/
+مستندات/
+تجاری سازی/
+اسکرام/
+الگوریتم ها/
+بلاکچین/
+مقیاس پذیری/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environments & secrets
+.env
+.env.local
+.env.development
+.env.production
+.venv
+venv/
+ENV/
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Django specific
+*.log
+*.pot
+*.sqlite3
+*.sqlite3-journal
+db.sqlite3
+db.sqlite3-shm
+db.sqlite3-wal
+media/
+staticfiles/
+collectstatic/
+migrations/__pycache__/
+
+# Coverage & testing
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.pytest_cache/
+.pytest_cache/
+tox/
+nox/
+.cache/
+coverage/
+.coverage*
+
+# IDEs & editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs_vista.db
+
+# Node.js / frontend (اگر frontend دارید)
+node_modules/
+.npm/
+.yarn/
+.yarnrc
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker / container stuff
+*.docker-volumes/
+
+# Deployment / production
+*.bak
+*.backup
+*.swp
+*.tmp
+*.temp
