@@ -1,4 +1,4 @@
-name: Django CI
+name: Django CI/CD
 
 on:
   push:
@@ -10,15 +10,56 @@ on:
       - main
 
 jobs:
+
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create .env from .env.example
-        run: cp .env.example .env
+      - name: Create .env
+        run: |
+          cat > .env << EOF
+          SECRET_KEY=${{ secrets.SECRET_KEY }}
+          DEBUG=${{ secrets.DEBUG }}
+          ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}
+
+          OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}
+          NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}
+
+          EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+          EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+          EMAIL_USE_TLS=${{ secrets.EMAIL_USE_TLS }}
+          EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}
+          EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}
+
+          DOMAIN=${{ secrets.DOMAIN }}
+
+          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+          REDIS_HOST=${{ secrets.REDIS_HOST }}
+          REDIS_PORT=${{ secrets.REDIS_PORT }}
+          REDIS_DB=${{ secrets.REDIS_DB }}
+
+          REDIS_URL=redis://:${{ secrets.REDIS_PASSWORD }}@${{ secrets.REDIS_HOST }}:${{ secrets.REDIS_PORT }}/${{ secrets.REDIS_DB }}
+
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+
+          ELASTICSEARCH_URL=${{ secrets.ELASTICSEARCH_URL }}
+
+          MINIO_ENDPOINT=${{ secrets.MINIO_ENDPOINT }}
+          MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}
+          MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}
+          MINIO_BUCKET=${{ secrets.MINIO_BUCKET }}
+          MINIO_DOMAIN=${{ secrets.MINIO_DOMAIN }}
+
+          PRODUCTION=True
+          EOF
 
       - name: Build containers
         run: docker compose build
@@ -28,25 +69,67 @@ jobs:
 
       - name: Wait for Django
         run: |
-          until docker compose exec -T django python manage.py check > /dev/null 2>&1
+          until docker compose exec -T django python manage.py check >/dev/null 2>&1
           do
             sleep 3
           done
 
-      - name: Create Elasticsearch index
+      - name: Create Elasticsearch Index
         run: |
           docker compose exec -T django \
           python manage.py search_index --rebuild -f
 
-      - name: Run tests
+      - name: Run Tests
         run: |
           docker compose exec -T django \
           python manage.py test
 
-      - name: Show logs on failure
+      - name: Show logs
         if: failure()
         run: docker compose logs
 
       - name: Shutdown
         if: always()
         run: docker compose down -v
+
+  publish:
+    needs: test
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha
+
+      - name: Build & Push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
