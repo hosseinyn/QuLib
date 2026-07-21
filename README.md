@@ -368,7 +368,9 @@ TESTING.md
 - [ ] پیاده سازی Replication برای Object Storage (MinIO)
 - [ ] کانفیگ Kubernetes برای استقرار و Orchestration در مقیاس بالا
 - [ ] پیاده سازی ELK Stack (Elasticsearch + Logstash + Kibana) برای مدیریت و تحلیل لاگ ها
-
+- [ ] استفاده از سیستم پیشنهاد دهی مبتنی بر Machine Learning
+- [ ] اضافه کردن Prometheus و Grafana و Sentry برای مانیتورینگ سرور ها و ردیابی خطا ها در کلاستر داکر
+- [ ] اضافه کردن WAF متن باز در داکر کلاستر
 
 # 🙂 توسعه دهنده
 
