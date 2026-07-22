@@ -320,6 +320,11 @@ softwares/
 
 قرار گرفته است.
 
+یا در لینوکس
+```bash
+  curl -sSL https://raw.githubusercontent.com/axllent/mailpit/develop/install.sh | sudo bash
+```
+
 # 🤖 نیازمندی های هوش مصنوعی
 
 در صورت بروز خطا هنگام نصب کتابخانه ‌های هوش مصنوعی، فایل
@@ -329,6 +334,40 @@ softwares/VC_redist.x64.exe
 ```
 
 را نصب کنید.
+
+یا در لینوکس
+```bash
+  apt-get update && apt-get install -y \
+  build-essential \
+  gcc \
+  g++ \
+  make \
+  git \
+  curl \
+  wget \
+  pkg-config \
+  libglib2.0-0 \
+  libgl1 \
+  libsm6 \
+  libxext6 \
+  libxrender-dev \
+  libgomp1 \
+  libjpeg-dev \
+  zlib1g-dev \
+  libpng-dev \
+  libtiff-dev \
+  libwebp-dev \
+  libopenjp2-7-dev \
+  libfreetype6-dev \
+  liblcms2-dev \
+  libharfbuzz-dev \
+  libfribidi-dev \
+  libxcb1-dev \
+  poppler-utils \
+  tesseract-ocr \
+  ffmpeg \
+  && rm -rf /var/lib/apt/lists/*
+```
 
 # 🛠️ دستورات مدیریتی
 
