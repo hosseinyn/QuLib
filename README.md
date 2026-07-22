@@ -235,13 +235,49 @@ python manage.py createsuperuser
 python manage.py collectstatic
 ```
 
-## 5. اجرا
+## 5. Redis (بدون داکر)
+کولیب برای کش کردن و انتقال پیام ها نیاز به ردیس دارد.
+
+در لینوکس : 
+```bash
+  sudo apt install redis
+  redis-server
+```
+
+در ویندوز :
+```batch
+  cd softwares
+  cd redis
+  redis-server
+```
+
+## 6. اجرا
 
 ```bash
 python manage.py runserver
 یا
 python3 manage.py runserver
 ```
+
+## 7. Mailpit (بدون داکر)
+
+```bash
+  cd softwares
+  mailpit
+```
+
+## 8. Celery (بدون داکر)
+
+در ویندوز
+```batch
+  celery -A QuLib worker -P solo -l INFO
+```
+
+در لینوکس
+```bash
+  celery -A QuLib worker -l INFO
+```
+
 
 ## تداخل django ninja و کتابخانه ninja
 در صورتی که به ارور تداخل کتابخانه ninja و django ninja برخورد کردید، دستور زیر را اجرا کنید : 
@@ -293,22 +329,6 @@ softwares/VC_redist.x64.exe
 ```
 
 را نصب کنید.
-
-# 🗄️ Redis (بدون داکر)
-کولیب برای کش کردن و انتقال پیام ها نیاز به ردیس دارد.
-
-در لینوکس : 
-```bash
-sudo apt install redis
-redis-server
-```
-
-در ویندوز :
-```batch
-cd softwares
-cd redis
-redis-server
-```
 
 # 🛠️ دستورات مدیریتی
 
